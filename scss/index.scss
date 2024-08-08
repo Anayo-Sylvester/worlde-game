@@ -1,0 +1,185 @@
+@import './config';
+@font-face {
+  font-family: 'happy_trial';
+  src: url(../Fonts/Happy_trails/Happy_Trails_W00_Regular/Happy_Trails_W00_Regular.ttf);
+}
+
+%placeContentCenter{
+  display: grid;
+  place-content: center;
+  // places item in center of the container
+}
+@mixin circularContent($width: 65px,$height: 65px){
+  width: $width;
+  height: $height;
+  border-radius: 50%;
+};
+
+
+header{
+  position: relative;
+  background: $secondary-background;
+  padding: 100px 10px 0px 10px;
+
+  %profile-base{
+    // profile-outline and profile shared styles
+    
+    @include circularContent;
+    // sets the width, height and makes it circular
+    border: 3px solid transparent;
+    // to enable border gradient visible
+  }
+
+  .profile-outline{
+    @extend %profile-base;
+    position: absolute;
+    // so it can be positioned
+
+    @extend %placeContentCenter;
+    // places it's content horizontally and vertically center
+    bottom: -12%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    @include circularContent();
+    // places item in the center and 40% below it's parent container
+
+    padding: 2px;
+    // makes background visible
+
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75), inset 0px 0px 5px 0px #333535;
+    // external and external box shadow
+
+    background: linear-gradient(to left,$progress 50%,$no-progress 50%) padding-box,linear-gradient(to top, #CF8A6D, #fff) border-box;
+    // background and border colour
+    
+    &::before{
+      // create rotatable progress bar
+
+      position: absolute;
+      content: "";
+      @include circularContent();
+      background: linear-gradient(to right,transparent 50%, $progress 50%);
+      transform: scale(1.05) translate(1.92px,1.8px);
+      // properly position it relative to profile-outline background
+      border-radius: 0 100% 100% 0;
+      // create half moon like shape
+    }
+  }
+
+  .profile{
+    // profile container styling
+    position: relative;
+    cursor: pointer;
+    @extend %profile-base;
+    // Shared stylings
+
+    background: linear-gradient($primary-background 100%, $primary-background 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
+    
+    // background and border colour 
+    
+    transform: scale(0.8);
+
+    // padding-top: 2px;
+    // helps in centering the internal img
+    
+    img,.level{
+      position: absolute;
+      left: 0;
+      right: 0;
+      margin: 0 auto;
+    }
+
+    .star-img{
+      top: -30px;
+    }
+    .level{
+      color: #fff;
+      text-shadow: -0.5px 0px 1.5px #000;
+      // to create outline on level
+      z-index: 1;
+      // makes it display over star image
+
+      top: -20px;
+      left: 28px;
+      right: auto;
+      // override generalized style and properly position it
+    }
+    .book{
+      transform: scale(0.9);
+      top: 6px;
+      // reduces the image while maintaining aspect ratio
+    }
+    .shield{
+      bottom: -20px;
+    }
+
+  }
+  
+  .money-container{
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    
+  }
+  .money{
+    position: relative;
+    display: flex;
+    font-family: 'happy_trial';
+    float: right;
+    background: rgba(0,0,0,.3);
+    // darkens the background and adds transparency
+
+    width: 80px;
+    height: 30px;
+    padding: 2px 0px 2px 20px;
+    border-radius: 50px;
+    
+    %vertical-center{
+      top: 0;
+      bottom: 0;
+      margin: auto 0;
+      // centers it vertically and positions it to the right
+    }
+
+    &-amount {
+      // styling the money amount
+      @extend %vertical-center;
+
+      position: absolute;
+      right: 35px;
+      color: #fff;
+
+      font-size: 24px;
+
+    }
+
+    &-icon{
+    // styles coin icon
+
+      position: absolute;
+      right: -10px;
+      @extend %vertical-center;
+      // centers it vertically and positions it to the right
+      transform: scale(0.74);
+    }
+
+    .increase-icon{
+      position: absolute;
+      right: -5px;
+      bottom: -2px;
+
+      cursor: pointer;
+
+      font-size: 16px;
+      background: #37C147;
+      color: #fff;
+
+      @extend %placeContentCenter;
+      @include circularContent(15px, 15px);
+      
+    }
+
+
+  }
+}

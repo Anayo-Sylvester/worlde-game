@@ -1,0 +1,123 @@
+body {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+@font-face {
+  font-family: "happy_trial";
+  src: url(../Fonts/Happy_trails/Happy_Trails_W00_Regular/Happy_Trails_W00_Regular.ttf);
+}
+header .money .increase-icon, header .profile-outline {
+  display: grid;
+  place-content: center;
+}
+
+header {
+  position: relative;
+  background: #E58F76;
+  padding: 100px 10px 0px 10px;
+}
+header .profile, header .profile-outline {
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+header .profile-outline {
+  position: absolute;
+  bottom: -12%;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  padding: 2px;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75), inset 0px 0px 5px 0px #333535;
+  background: linear-gradient(to left, #28D2DF 50%, #AC5037 50%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
+}
+header .profile-outline::before {
+  position: absolute;
+  content: "";
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  background: linear-gradient(to right, transparent 50%, #28D2DF 50%);
+  transform: scale(1.05) translate(1.92px, 1.8px);
+  border-radius: 0 100% 100% 0;
+}
+header .profile {
+  position: relative;
+  cursor: pointer;
+  background: linear-gradient(#F5E72F 100%, #F5E72F 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
+  transform: scale(0.8);
+}
+header .profile img, header .profile .level {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+}
+header .profile .star-img {
+  top: -30px;
+}
+header .profile .level {
+  color: #fff;
+  text-shadow: -0.5px 0px 1.5px #000;
+  z-index: 1;
+  top: -20px;
+  left: 28px;
+  right: auto;
+}
+header .profile .book {
+  transform: scale(0.9);
+  top: 6px;
+}
+header .profile .shield {
+  bottom: -20px;
+}
+header .money-container {
+  position: absolute;
+  right: 15px;
+  bottom: 15px;
+}
+header .money {
+  position: relative;
+  display: flex;
+  font-family: "happy_trial";
+  float: right;
+  background: rgba(0, 0, 0, 0.3);
+  width: 80px;
+  height: 30px;
+  padding: 2px 0px 2px 20px;
+  border-radius: 50px;
+}
+header .money .money-icon, header .money .money-amount {
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+}
+header .money-amount {
+  position: absolute;
+  right: 35px;
+  color: #fff;
+  font-size: 24px;
+}
+header .money-icon {
+  position: absolute;
+  right: -10px;
+  transform: scale(0.74);
+}
+header .money .increase-icon {
+  position: absolute;
+  right: -5px;
+  bottom: -2px;
+  cursor: pointer;
+  font-size: 16px;
+  background: #37C147;
+  color: #fff;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}/*# sourceMappingURL=index.css.map */
