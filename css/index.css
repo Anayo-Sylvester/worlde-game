@@ -1,22 +1,53 @@
-body {
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
+@font-face {
+  font-family: "junegull";
+  src: url(../Fonts/junegull/junegull\ rg.otf);
+}
+@font-face {
+  font-family: "open_sans";
+  src: url("../Fonts/Open_Sans/OpenSans-VariableFont_wdth_wght.ttf");
+  font-weight: 800;
+}
+:root {
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-@font-face {
-  font-family: "happy_trial";
-  src: url(../Fonts/Happy_trails/Happy_Trails_W00_Regular/Happy_Trails_W00_Regular.ttf);
+* {
+  box-sizing: border-box;
 }
-header .money .increase-icon, header .profile-outline {
+
+body {
+  font-family: "junegull";
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
+main .game-name-container p span, header .money .increase-icon, header .profile-outline, header .spin-container p {
   display: grid;
   place-content: center;
 }
 
+header .money-icon, header .money-amount {
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+}
+
 header {
+  z-index: 1;
   position: relative;
-  background: #E58F76;
-  padding: 100px 10px 0px 10px;
+  background: hsl(14, 68%, 68%);
+  height: 100px;
+}
+header::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  background: linear-gradient(to bottom, hsl(14, 33%, 40%), hsl(0, 2%, 65%));
 }
 header .profile, header .profile-outline {
   width: 65px;
@@ -24,7 +55,33 @@ header .profile, header .profile-outline {
   border-radius: 50%;
   border: 3px solid transparent;
 }
+header .spin-container, header .no-ads-container {
+  transform: scale(0.6);
+}
+header .no-ads-container {
+  position: absolute;
+  left: -20px;
+  bottom: -15px;
+}
+header .spin-container {
+  position: absolute;
+  left: 40px;
+  bottom: -15px;
+  font-family: "open_sans";
+  color: #fff;
+}
+header .spin-container p {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  position: absolute;
+  top: -10px;
+  left: 55px;
+  border: 3px solid #fff;
+  background: red;
+}
 header .profile-outline {
+  z-index: 1;
   position: absolute;
   bottom: -12%;
   left: 0;
@@ -35,22 +92,22 @@ header .profile-outline {
   border-radius: 50%;
   padding: 2px;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75), inset 0px 0px 5px 0px #333535;
-  background: linear-gradient(to left, #28D2DF 50%, #AC5037 50%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
+  background: linear-gradient(to left, hsl(184, 74%, 52%) 50%, hsl(13, 52%, 45%) 50%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
 }
 header .profile-outline::before {
-  position: absolute;
-  content: "";
   width: 65px;
   height: 65px;
   border-radius: 50%;
-  background: linear-gradient(to right, transparent 50%, #28D2DF 50%);
-  transform: scale(1.05) translate(1.92px, 1.8px);
+  position: absolute;
+  content: "";
+  background: linear-gradient(to right, transparent 50%, hsl(184, 74%, 52%) 50%);
+  transform: scale(0.9) translate(-3.15px, -2.5px) rotate(0turn);
   border-radius: 0 100% 100% 0;
 }
 header .profile {
   position: relative;
   cursor: pointer;
-  background: linear-gradient(#F5E72F 100%, #F5E72F 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
+  background: linear-gradient(hsl(56, 91%, 57%) 100%, hsl(56, 91%, 57%) 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
   transform: scale(0.8);
 }
 header .profile img, header .profile .level {
@@ -80,23 +137,17 @@ header .profile .shield {
 header .money-container {
   position: absolute;
   right: 15px;
-  bottom: 15px;
+  bottom: 20px;
 }
 header .money {
   position: relative;
   display: flex;
-  font-family: "happy_trial";
   float: right;
   background: rgba(0, 0, 0, 0.3);
   width: 80px;
   height: 30px;
   padding: 2px 0px 2px 20px;
   border-radius: 50px;
-}
-header .money .money-icon, header .money .money-amount {
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
 }
 header .money-amount {
   position: absolute;
@@ -120,4 +171,52 @@ header .money .increase-icon {
   width: 15px;
   height: 15px;
   border-radius: 50%;
+}
+
+main {
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 460px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding-top: 90px;
+  overflow: hidden;
+}
+main::before {
+  position: absolute;
+  z-index: -1;
+  content: "";
+  top: -60%;
+  min-height: 2000px;
+  min-width: 2000px;
+  background-image: linear-gradient(90deg, hsl(12, 68%, 61%) 50%, hsl(10, 68%, 60%) 50%);
+  background-size: 20px;
+  animation: background-movement 5s infinite 0.5s linear;
+}
+main .game-name-container p {
+  display: flex;
+  justify-content: space-evenly;
+  font-size: 24px;
+  color: #fff;
+}
+main .game-name-container p span {
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--clr);
+  box-shadow: 3px 3px hsl(from var(--clr) h s 40);
+}
+
+@keyframes background-movement {
+  0% {
+    transform: rotate(-0.1turn) translate(-25%, -10%);
+  }
+  50% {
+    transform: rotate(-0.1turn) translate(-30%, -10%);
+  }
+  100% {
+    transform: rotate(-0.1turn) translate(-25%, -10%);
+  }
 }/*# sourceMappingURL=index.css.map */

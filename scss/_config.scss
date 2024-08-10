@@ -1,12 +1,34 @@
-$secondary-background: #E58F76; //lighter peach
-$primary-background:#F5E72F;// light yellow
-$gradient_1: #E07257; //light peach
-$gradient_2: #DE6C54; // dark peach
-$progress: #28D2DF;//light blue
-$no-progress:#AC5037; //default colour when there's no progress
+$peach-100: hsl(14, 68%, 68%); 
+$peach-200: hsl(12, 68%, 61%); 
+$peach-300: hsl(10, 68%, 60%);
+$primary-background:hsl(56, 91%, 57%);// light yellow
 
-body{
-  box-sizing: border-box;
-  margin: 0px;
-  padding: 0px;
+$progress: hsl(184, 74%, 52%);//light blue
+$no-progress:hsl(13, 52%, 45%); //default colour when there's no progress
+
+@font-face {
+  font-family: 'junegull';
+  src: url(../Fonts/junegull/junegull\ rg.otf);
 }
+
+@font-face {
+  font-family: "open_sans";
+  src: url('../Fonts/Open_Sans/OpenSans-VariableFont_wdth_wght.ttf');
+  font-weight: 800;
+}
+:root{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+*{
+  box-sizing: border-box;
+}
+body{
+  font-family: 'junegull';
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+

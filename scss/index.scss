@@ -1,13 +1,20 @@
 @import './config';
-@font-face {
-  font-family: 'happy_trial';
-  src: url(../Fonts/Happy_trails/Happy_Trails_W00_Regular/Happy_Trails_W00_Regular.ttf);
-}
+
 
 %placeContentCenter{
   display: grid;
   place-content: center;
   // places item in center of the container
+}
+%cursorPointer{
+  cursor: pointer;
+  // when button is hovered over style is applied
+}
+%vertical-center {
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  // centers it vertically and positions it to the right
 }
 @mixin circularContent($width: 65px,$height: 65px){
   width: $width;
@@ -17,9 +24,19 @@
 
 
 header{
+  z-index: 1;
   position: relative;
-  background: $secondary-background;
-  padding: 100px 10px 0px 10px;
+  background: $peach-100;
+  height: 100px;
+
+  &::after{
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 3px;
+    bottom: 0;
+    background: linear-gradient(to bottom,hsl(14, 33%, 40%),hsl(0, 2%, 65%));
+  }
 
   %profile-base{
     // profile-outline and profile shared styles
@@ -30,13 +47,54 @@ header{
     // to enable border gradient visible
   }
 
-  .profile-outline{
-    @extend %profile-base;
+  %resize-image{
+    // resize image so they are uniform
+    transform: scale(0.6);
+  }
+  .no-ads-container{
+    // styles the container that houses no ads logo
+    @extend %resize-image;
     position: absolute;
-    // so it can be positioned
+    left:-20px;
+    bottom: -15px;  
+    // determine it's shape and position
+  }
+  .spin-container{
+    // styles the container that houses the spin icon
+    @extend %resize-image;
 
+    position: absolute;
+    left: 40px;
+    bottom: -15px;
+    // position styling
+
+    font-family: "open_sans";
+    color: #fff;
+    // font styling
+    p{
+      @include circularContent(30px, 30px);
+      @extend %placeContentCenter;
+      //places it's inner content center and makes itself circular 
+
+      position: absolute;
+      top: -10px;
+      left: 55px;
+      // position styling
+
+      border: 3px solid #fff;
+      background:red;
+    }
+  }
+
+  .profile-outline{
+    // houses the profile in the middle of the screen
+    @extend %profile-base;
     @extend %placeContentCenter;
     // places it's content horizontally and vertically center
+    z-index: 1;
+    // makes it display above header shadow  
+
+    position: absolute;
     bottom: -12%;
     left: 0;
     right: 0;
@@ -47,20 +105,24 @@ header{
     padding: 2px;
     // makes background visible
 
-    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75), inset 0px 0px 5px 0px #333535;
-    // external and external box shadow
+    box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.75),inset 0px 0px 5px 0px #333535;
+    // external and internal box shadow
 
     background: linear-gradient(to left,$progress 50%,$no-progress 50%) padding-box,linear-gradient(to top, #CF8A6D, #fff) border-box;
     // background and border colour
     
     &::before{
-      // create rotatable progress bar
+      // create rotatable progress bar in profile
+
+      @include circularContent();
+      // gives it height and width so it can be visible and makes it circular
 
       position: absolute;
       content: "";
-      @include circularContent();
-      background: linear-gradient(to right,transparent 50%, $progress 50%);
-      transform: scale(1.05) translate(1.92px,1.8px);
+      
+      background: linear-gradient(to right,transparent 50%,$progress 50%);
+
+      transform: scale(0.9) translate(-3.15px,-2.5px) rotate(0.0turn);
       // properly position it relative to profile-outline background
       border-radius: 0 100% 100% 0;
       // create half moon like shape
@@ -68,6 +130,7 @@ header{
   }
 
   .profile{
+    // display: none;
     // profile container styling
     position: relative;
     cursor: pointer;
@@ -119,13 +182,13 @@ header{
   .money-container{
     position: absolute;
     right: 15px;
-    bottom: 15px;
+    bottom: 20px;
+    // properly positions the money container
     
   }
   .money{
     position: relative;
     display: flex;
-    font-family: 'happy_trial';
     float: right;
     background: rgba(0,0,0,.3);
     // darkens the background and adds transparency
@@ -135,19 +198,14 @@ header{
     padding: 2px 0px 2px 20px;
     border-radius: 50px;
     
-    %vertical-center{
-      top: 0;
-      bottom: 0;
-      margin: auto 0;
-      // centers it vertically and positions it to the right
-    }
-
     &-amount {
       // styling the money amount
-      @extend %vertical-center;
-
       position: absolute;
+
+      @extend %vertical-center;
       right: 35px;
+      // centers it vertically and positions it to the right
+
       color: #fff;
 
       font-size: 24px;
@@ -181,5 +239,68 @@ header{
     }
 
 
+  }
+}
+
+
+main{
+  position: relative;
+  width: 100%;
+  height: 70vh;
+  min-height: 460px;
+  max-width: 900px;
+  margin:  0 auto;
+  // centers it horizontally
+  padding-top: 90px;
+
+  overflow: hidden;
+  // hides the overflowing background
+  
+
+  &::before{
+    position: absolute;
+    z-index: -1;
+    content: "";
+    top: -60%;
+    min-height: 2000px;
+    min-width:  2000px;
+
+    background-image:
+      linear-gradient(90deg,
+        $peach-200 50%,
+        $peach-300 50%);
+    background-size: 20px;
+    animation: background-movement 5s infinite .5s linear;
+  }
+  .game-name-container {
+    p {
+      // style the text worlde!
+      display: flex;
+      justify-content: space-evenly;
+      font-size: 24px;
+      color: #fff;
+
+      span {
+        z-index: 1;
+        // enable wordle display over background
+        @include circularContent(40px, 40px);
+        @extend %placeContentCenter;
+        background: var(--clr);
+        box-shadow: 3px 3px hsl(from var(--clr) h s 40);
+        // creates darker box shadow based on background colour
+      }
+    }
+  }
+}
+
+@keyframes background-movement {
+  0%{
+    transform: rotate(-0.1turn) translate(-25%, -10%);  
+  }
+  50%{
+    transform: rotate(-0.1turn) translate(-30%, -10%);
+  }
+  100%{
+    transform: rotate(-0.1turn) translate(-25%, -10%);
   }
 }
