@@ -3,9 +3,11 @@ $peach-200: hsl(12, 68%, 61%);
 $peach-300: hsl(10, 68%, 60%);
 $primary-background:hsl(56, 91%, 57%);// light yellow
 
+
 $progress: hsl(184, 74%, 52%);//light blue
 $no-progress:hsl(13, 52%, 45%); //default colour when there's no progress
 
+$money-size: 28.8px;
 @font-face {
   font-family: 'junegull';
   src: url(../Fonts/junegull/junegull\ rg.otf);

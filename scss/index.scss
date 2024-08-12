@@ -27,16 +27,13 @@ header{
   z-index: 1;
   position: relative;
   background: $peach-100;
-  height: 100px;
+  height: fit-content;
+  display: flex;
+  align-items: end;
+  box-shadow: 0 1px 5px 3px #8B5241;
 
-  &::after{
-    position: absolute;
-    content: "";
-    width: 100%;
-    height: 3px;
-    bottom: 0;
-    background: linear-gradient(to bottom,hsl(14, 33%, 40%),hsl(0, 2%, 65%));
-  }
+  padding: 40px 5px 10px 5px;
+
 
   %profile-base{
     // profile-outline and profile shared styles
@@ -49,40 +46,52 @@ header{
 
   %resize-image{
     // resize image so they are uniform
-    transform: scale(0.6);
+    height: 60px;
+    width: auto;
   }
+
+
   .no-ads-container{
     // styles the container that houses no ads logo
-    @extend %resize-image;
-    position: absolute;
-    left:-20px;
-    bottom: -15px;  
-    // determine it's shape and position
+
+    display: flex;
+    margin: auto 15px 0 0;
+    // uses flex so margin-auto works properly and image fits container,  and moves it to the bottom of the header
+
+    .no-ads{
+      @extend %resize-image;
+      // determine image size
+    }
   }
+
   .spin-container{
     // styles the container that houses the spin icon
-    @extend %resize-image;
-
-    position: absolute;
-    left: 40px;
-    bottom: -15px;
-    // position styling
+    position: relative;
+    margin: auto 0 0 0;
+    // position styling and moves it to the bottom of the header
 
     font-family: "open_sans";
     color: #fff;
     // font styling
+
+    img{
+      @extend %resize-image;
+      display: block;
+    }
     p{
-      @include circularContent(30px, 30px);
+      @include circularContent(20px,20px);
       @extend %placeContentCenter;
       //places it's inner content center and makes itself circular 
-
+      
       position: absolute;
-      top: -10px;
-      left: 55px;
-      // position styling
+      top: -4px;
+      right: 7px;
+      // position the number of spins beside the spin board
 
-      border: 3px solid #fff;
+      font-size: 12px;
+      border: 2px solid #fff;
       background:red;
+      // determines text size and border and background of spin amount
     }
   }
 
@@ -127,118 +136,103 @@ header{
       border-radius: 0 100% 100% 0;
       // create half moon like shape
     }
+    .profile{
+    
+      position: relative;
+      cursor: pointer;
+      @extend %profile-base;
+      // Shared stylings
+
+      background: linear-gradient($primary-background 100%, $primary-background 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
+      
+      // background and border colour 
+      
+      transform: scale(0.8);
+
+      // padding-top: 2px;
+      // helps in centering the internal img
+      
+      %horizontalCenter{
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+      }
+      img{
+        @extend %horizontalCenter;
+      }
+      .star-img{
+        top: -30px;
+      }
+      .level{
+        color: #fff;
+        text-shadow: -0.5px 0px 1.5px #000;
+        font-size: 14px;
+        // to create outline on level
+        z-index: 1;
+        // makes it display over star image
+        position: absolute;
+        top: -34px;
+        left: 26px;
+        // override generalized style and properly position it
+      }
+      .book{
+        transform: scale(0.9);
+        top: 6px;
+        // reduces the image while maintaining aspect ratio
+      }
+      .shield{
+        bottom: -25px;
+      }
+
+    }
   }
 
-  .profile{
-    // display: none;
-    // profile container styling
-    position: relative;
-    cursor: pointer;
-    @extend %profile-base;
-    // Shared stylings
 
-    background: linear-gradient($primary-background 100%, $primary-background 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
-    
-    // background and border colour 
-    
-    transform: scale(0.8);
-
-    // padding-top: 2px;
-    // helps in centering the internal img
-    
-    img,.level{
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: 0 auto;
-    }
-
-    .star-img{
-      top: -30px;
-    }
-    .level{
-      color: #fff;
-      text-shadow: -0.5px 0px 1.5px #000;
-      // to create outline on level
-      z-index: 1;
-      // makes it display over star image
-
-      top: -20px;
-      left: 28px;
-      right: auto;
-      // override generalized style and properly position it
-    }
-    .book{
-      transform: scale(0.9);
-      top: 6px;
-      // reduces the image while maintaining aspect ratio
-    }
-    .shield{
-      bottom: -20px;
-    }
-
-  }
   
+ 
   .money-container{
-    position: absolute;
-    right: 15px;
-    bottom: 20px;
-    // properly positions the money container
     
-  }
-  .money{
     position: relative;
-    display: flex;
-    float: right;
-    background: rgba(0,0,0,.3);
-    // darkens the background and adds transparency
-
-    width: 80px;
-    height: 30px;
-    padding: 2px 0px 2px 20px;
-    border-radius: 50px;
     
-    &-amount {
-      // styling the money amount
-      position: absolute;
+    display: flex;
+    margin: auto 0 10px auto; 
+    align-items: center;
+    // positions the money in the center
+    
+    border-radius: 30px;
+    background: hsl(0 0% 0% / .3);
+    color: hsl(0, 0%, 100%);
+    height: $money-size;
+    width: 100px;
 
-      @extend %vertical-center;
-      right: 35px;
-      // centers it vertically and positions it to the right
-
-      color: #fff;
-
-      font-size: 24px;
-
+    .money-amount{
+      margin-left: auto;
+      margin-right: 30px;
     }
-
-    &-icon{
-    // styles coin icon
-
+    .money-icon{
       position: absolute;
-      right: -10px;
-      @extend %vertical-center;
-      // centers it vertically and positions it to the right
-      transform: scale(0.74);
+      height: $money-size;
+      right: 0;
+      top: 0;
     }
-
-    .increase-icon{
-      position: absolute;
-      right: -5px;
-      bottom: -2px;
+    span{
+      @include circularContent(50px,50px);
+      @extend %placeContentCenter;
 
       cursor: pointer;
 
-      font-size: 16px;
-      background: #37C147;
-      color: #fff;
+      display: block;
+      position: absolute;
+      right: -18px;
+      bottom: -20px;
+      //display to remove it from being inline element 
 
-      @extend %placeContentCenter;
-      @include circularContent(15px, 15px);
-      
+      transform: scale(0.25);
+      // determines the size of the increment
+
+      background:hsl(126, 57%, 48%);
     }
-
-
   }
 }
 
@@ -258,6 +252,7 @@ main{
   
 
   &::before{
+    // to creates the moving background
     position: absolute;
     z-index: -1;
     content: "";
@@ -270,7 +265,7 @@ main{
         $peach-200 50%,
         $peach-300 50%);
     background-size: 20px;
-    animation: background-movement 5s infinite .5s linear;
+    animation: background-movement 15s infinite .5s linear;
   }
   .game-name-container {
     p {
@@ -290,6 +285,12 @@ main{
         // creates darker box shadow based on background colour
       }
     }
+  }
+
+  .game-play-section{
+    border: 4px solid hsl(10, 44%, 69%);
+    border-radius: 25px;
+    
   }
 }
 

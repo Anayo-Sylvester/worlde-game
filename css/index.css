@@ -24,60 +24,54 @@ body {
   padding: 0;
 }
 
-main .game-name-container p span, header .money .increase-icon, header .profile-outline, header .spin-container p {
+main .game-name-container p span, header .money-container span, header .profile-outline, header .spin-container p {
   display: grid;
   place-content: center;
-}
-
-header .money-icon, header .money-amount {
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
 }
 
 header {
   z-index: 1;
   position: relative;
   background: hsl(14, 68%, 68%);
-  height: 100px;
+  height: -moz-fit-content;
+  height: fit-content;
+  display: flex;
+  align-items: end;
+  box-shadow: 0 1px 5px 3px #8B5241;
+  padding: 40px 5px 10px 5px;
 }
-header::after {
-  position: absolute;
-  content: "";
-  width: 100%;
-  height: 3px;
-  bottom: 0;
-  background: linear-gradient(to bottom, hsl(14, 33%, 40%), hsl(0, 2%, 65%));
-}
-header .profile, header .profile-outline {
+header .profile-outline .profile, header .profile-outline {
   width: 65px;
   height: 65px;
   border-radius: 50%;
   border: 3px solid transparent;
 }
-header .spin-container, header .no-ads-container {
-  transform: scale(0.6);
+header .spin-container img, header .no-ads-container .no-ads {
+  height: 60px;
+  width: auto;
 }
 header .no-ads-container {
-  position: absolute;
-  left: -20px;
-  bottom: -15px;
+  display: flex;
+  margin: auto 15px 0 0;
 }
 header .spin-container {
-  position: absolute;
-  left: 40px;
-  bottom: -15px;
+  position: relative;
+  margin: auto 0 0 0;
   font-family: "open_sans";
   color: #fff;
 }
+header .spin-container img {
+  display: block;
+}
 header .spin-container p {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   position: absolute;
-  top: -10px;
-  left: 55px;
-  border: 3px solid #fff;
+  top: -4px;
+  right: 7px;
+  font-size: 12px;
+  border: 2px solid #fff;
   background: red;
 }
 header .profile-outline {
@@ -104,73 +98,69 @@ header .profile-outline::before {
   transform: scale(0.9) translate(-3.15px, -2.5px) rotate(0turn);
   border-radius: 0 100% 100% 0;
 }
-header .profile {
+header .profile-outline .profile {
   position: relative;
   cursor: pointer;
   background: linear-gradient(hsl(56, 91%, 57%) 100%, hsl(56, 91%, 57%) 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
   transform: scale(0.8);
 }
-header .profile img, header .profile .level {
+header .profile-outline .profile img {
   position: absolute;
   left: 0;
   right: 0;
   margin: 0 auto;
 }
-header .profile .star-img {
+header .profile-outline .profile .star-img {
   top: -30px;
 }
-header .profile .level {
+header .profile-outline .profile .level {
   color: #fff;
   text-shadow: -0.5px 0px 1.5px #000;
+  font-size: 14px;
   z-index: 1;
-  top: -20px;
-  left: 28px;
-  right: auto;
+  position: absolute;
+  top: -34px;
+  left: 26px;
 }
-header .profile .book {
+header .profile-outline .profile .book {
   transform: scale(0.9);
   top: 6px;
 }
-header .profile .shield {
-  bottom: -20px;
+header .profile-outline .profile .shield {
+  bottom: -25px;
 }
 header .money-container {
-  position: absolute;
-  right: 15px;
-  bottom: 20px;
-}
-header .money {
   position: relative;
   display: flex;
-  float: right;
-  background: rgba(0, 0, 0, 0.3);
-  width: 80px;
-  height: 30px;
-  padding: 2px 0px 2px 20px;
-  border-radius: 50px;
+  margin: auto 0 10px auto;
+  align-items: center;
+  border-radius: 30px;
+  background: hsla(0, 0%, 0%, 0.3);
+  color: hsl(0, 0%, 100%);
+  height: 28.8px;
+  width: 100px;
 }
-header .money-amount {
-  position: absolute;
-  right: 35px;
-  color: #fff;
-  font-size: 24px;
+header .money-container .money-amount {
+  margin-left: auto;
+  margin-right: 30px;
 }
-header .money-icon {
+header .money-container .money-icon {
   position: absolute;
-  right: -10px;
-  transform: scale(0.74);
+  height: 28.8px;
+  right: 0;
+  top: 0;
 }
-header .money .increase-icon {
-  position: absolute;
-  right: -5px;
-  bottom: -2px;
-  cursor: pointer;
-  font-size: 16px;
-  background: #37C147;
-  color: #fff;
-  width: 15px;
-  height: 15px;
+header .money-container span {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
+  cursor: pointer;
+  display: block;
+  position: absolute;
+  right: -18px;
+  bottom: -20px;
+  transform: scale(0.25);
+  background: hsl(126, 57%, 48%);
 }
 
 main {
@@ -192,7 +182,7 @@ main::before {
   min-width: 2000px;
   background-image: linear-gradient(90deg, hsl(12, 68%, 61%) 50%, hsl(10, 68%, 60%) 50%);
   background-size: 20px;
-  animation: background-movement 5s infinite 0.5s linear;
+  animation: background-movement 15s infinite 0.5s linear;
 }
 main .game-name-container p {
   display: flex;
@@ -207,6 +197,10 @@ main .game-name-container p span {
   border-radius: 50%;
   background: var(--clr);
   box-shadow: 3px 3px hsl(from var(--clr) h s 40);
+}
+main .game-play-section {
+  border: 4px solid hsl(10, 44%, 69%);
+  border-radius: 25px;
 }
 
 @keyframes background-movement {
