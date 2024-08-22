@@ -1,7 +1,16 @@
 $peach-100: hsl(14, 68%, 68%); 
 $peach-200: hsl(12, 68%, 61%); 
 $peach-300: hsl(10, 68%, 60%);
+$peach-400: hsl(12, 41%, 46%);
+
 $primary-background:hsl(56, 91%, 57%);// light yellow
+$main-button-100:hsl(50, 93%, 61%);
+$main-button-200: hsl(39, 100%, 49%);
+
+$light-blue-100: hsl(205, 88%, 77%);
+$light-blue-200: hsl(212, 92%, 65%);
+$light-blue-300: hsl(213, 55%, 50%);
+$light-blue-400: hsl(209, 86%, 36%);
 
 
 $progress: hsl(184, 74%, 52%);//light blue
@@ -22,15 +31,21 @@ $money-size: 28.8px;
   margin: 0;
   padding: 0;
   list-style: none;
+  
 }
 
 *{
   box-sizing: border-box;
+  font-family: 'junegull';
 }
 body{
   font-family: 'junegull';
   width: 100vw;
   margin: 0;
   padding: 0;
+  background: hsl(0, 4%, 35%);
+}
+.spin-container,.no-ads-container,button{
+  cursor: pointer;
 }
 

@@ -1,0 +1,580 @@
+@import './config';
+
+
+%placeContentCenter{
+  display: grid;
+  place-content: center;
+  // places item in center of the container
+}
+%cursorPointer{
+  cursor: pointer;
+  // when button is hovered over style is applied
+}
+%vertical-center {
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  // centers it vertically and positions it to the right
+}
+@mixin circularContent($width: 65px,$height: 65px){
+  width: $width;
+  height: $height;
+  border-radius: 50%;
+};
+
+
+header{
+  
+  display: flex;
+  position: relative;
+  
+  box-shadow: 0 1px 5px 3px #8B5241;
+  background: $peach-100;
+  
+  height: fit-content;//90px used in calc in main height
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 5px 10px 5px;
+  // internal spacing and size
+
+  %profile-base{
+    // profile-outline and profile shared styles
+    
+    @include circularContent;
+    // sets the width, height and makes it circular
+    border: 3px solid transparent;
+    // to enable border gradient visible
+  }
+
+  %resize-image{
+    // resize image so they are uniform
+    height: 40px;
+    width: auto;
+  }
+
+
+  .no-ads-container{
+    // styles the container that houses no ads logo
+
+    display: flex;
+    margin: auto 15px 0 0;
+    // uses flex so margin-auto works properly and image fits container,  and moves it to the bottom of the header
+
+    .no-ads{
+      @extend %resize-image;
+      // determine image size
+    }
+  }
+
+  .spin-container{
+    // styles the container that houses the spin icon
+    position: relative;
+    margin: auto 0 0 0;
+    // position styling and moves it to the bottom of the header
+
+    color: #fff;
+    // text amount styling
+
+    img{
+      @extend %resize-image;
+      display: block;
+    }
+    p{
+      @include circularContent(20px,20px);
+      @extend %placeContentCenter;
+      //places it's inner content center and makes itself circular 
+      
+      position: absolute;
+      top: -13px;
+      right: -2px;
+      // position the number of spins beside the spin board
+
+      font-size: 12px;
+      border: 2px solid #fff;
+      background:red;
+      // determines text size and border and background of spin amount
+    }
+  }
+
+  .profile-outline{
+    // houses the profile in the middle of the screen
+    @extend %profile-base;
+    @extend %placeContentCenter;
+    // places it's content horizontally and vertically center
+    z-index: 1;
+    // makes it display above header shadow  
+
+    position: absolute;
+    bottom: -12%;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    @include circularContent();
+    // places item in the center and 40% below it's parent container
+
+    padding: 2px;
+    // makes background visible
+
+    box-shadow:  0px 0px 5px 0px rgba(0, 0, 0, 0.75),inset 0px 0px 5px 0px #333535;
+    // external and internal box shadow
+
+    background: linear-gradient(to left,$progress 50%,$no-progress 50%) padding-box,linear-gradient(to top, #CF8A6D, #fff) border-box;
+    // background and border colour
+    
+    &::before{
+      // create rotatable progress bar in profile
+
+      @include circularContent();
+      // gives it height and width so it can be visible and makes it circular
+
+      position: absolute;
+      content: "";
+      
+      background: linear-gradient(to right,transparent 50%,$progress 50%);
+
+      transform: scale(0.9) translate(-3.15px,-2.5px) rotate(0.0turn);
+      // properly position it relative to profile-outline background
+      border-radius: 0 100% 100% 0;
+      // create half moon like shape
+    }
+    .profile{
+    
+      position: relative;
+      cursor: pointer;
+      @extend %profile-base;
+      // Shared stylings
+
+      background: linear-gradient($primary-background 100%, $primary-background 100%) padding-box, linear-gradient(to top, #CF8A6D, #fff) border-box;
+      
+      // background and border colour 
+      
+      transform: scale(0.8);
+
+      // padding-top: 2px;
+      // helps in centering the internal img
+      
+      %horizontalCenter{
+        position: absolute;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+      }
+      >img{
+        @extend %horizontalCenter;
+      }
+      .level{
+        @extend %placeContentCenter;
+        position: absolute;
+        top: -20px;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        // positions it horizontally to the center and places it content to the center
+
+        background: url("../../assets/Images/Ui/star.png") center/cover;
+
+        height: 30px;
+        width: 30px;
+        color: #fff;
+        font-size: 14px;
+        // determines size and color of it and its inner text
+        
+        p{
+          text-shadow: -0.5px 0px 1.5px #000;
+        }
+      }
+      .book{
+        transform: scale(0.9);
+        top: 6px;
+        // reduces the image while maintaining aspect ratio
+      }
+      .shield{
+        bottom: -25px;
+      }
+
+    }
+  }
+
+
+  
+ 
+  .money-container{
+    
+    position: relative;
+    
+    display: flex;
+    margin: auto 0 10px auto; 
+    align-items: center;
+    // positions the money in the center
+    
+    border-radius: 30px;
+    background: hsl(0 0% 0% / .3);
+    color: hsl(0, 0%, 100%);
+    height: $money-size;
+    width: 100px;
+
+    .money-amount{
+      margin-left: auto;
+      margin-right: 30px;
+    }
+    .money-icon{
+      position: absolute;
+      height: $money-size;
+      right: 0;
+      top: 0;
+    }
+    span{
+      @include circularContent(50px,50px);
+      @extend %placeContentCenter;
+
+      cursor: pointer;
+
+      display: block;
+      position: absolute;
+      right: -18px;
+      bottom: -20px;
+      //display to remove it from being inline element 
+
+      transform: scale(0.25);
+      // determines the size of the increment
+
+      background:hsl(126, 57%, 48%);
+    }
+  }
+}
+
+
+main{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  // space its content
+
+  position: relative;
+  height: calc(100vh - 90px);
+  max-width: 900px;
+  margin:  0 auto;
+  // centers it horizontally
+  
+  padding-top: max(90px,12vh);
+
+  overflow: hidden;
+  // hides the overflowing background
+  
+
+  &::before{
+    // to creates the moving background
+    position: absolute;
+    z-index: -1;
+    content: "";
+    top: -60%;
+    min-height: 2000px;
+    min-width:  2000px;
+
+    background-image:
+      linear-gradient(90deg,
+        $peach-200 50%,
+        $peach-300 50%);
+    background-size: 25px;
+    animation: background-movement 15s infinite .5s linear;
+  }
+  .game-name-container {
+    p {
+      // style the text worlde!
+      display: flex;
+      justify-content: space-evenly;
+      font-size: 24px;
+      color: #fff;
+
+      span {
+        z-index: 1;
+        // enable wordle display over background
+        @include circularContent(clamp(40px,2vw,150px), clamp(40px,2vw,150px));
+        @extend %placeContentCenter;
+        background: var(--clr);
+        box-shadow: 3px 3px hsl(from var(--clr) h s 40);
+        // creates darker box shadow based on background colour
+      }
+    }
+  }
+  .game-play-section{
+    .top{
+      position: relative;
+      display: grid;
+      grid-template-areas: "a b b b b b b b"
+                            "c c c c c c c c";
+      grid-template-rows: 90px;
+      border: 4px solid hsl(11, 68%, 75%);
+      border-radius: 33px;
+      gap: 10px;
+      padding: 10px;
+      margin: 0 2px;
+      &::after{
+        // covers up holes in gap
+        position: absolute;
+        content: "";
+        top: 37%;
+        left: 0;
+        height: 40px;
+        width: 15px;
+        background-color: $peach-400;
+        border-radius: 0% 100% 100% 0% / 0% 63% 50% 100%;
+      }
+      &::before{
+        // covers up holes in gap
+        position: absolute;
+        content: "";
+        top: 37%;
+        right: 0;
+        height: 40px;
+        width: 15px;
+        background-color: $peach-400;
+        border-radius: 100% 0% 0% 100% / 44% 100% 0% 56%;
+      }
+      .bg-100{
+        background-color: $main-button-100;
+      }
+      .bg-100.t{
+        background-color: hsla(40, 53%, 62%, 0.4);
+        
+      }
+      .bg-200{
+        background-color: $main-button-200;
+      }
+      button{
+        border-radius: 20px;
+        border: none;
+        box-shadow:  inset 0px  -3px $main-button-200;
+        color: #fff;
+        h2{
+          text-shadow: 1px 1px 2px hsl(0, 0%, 20%);
+        }
+      }
+      .leaderboard-btn{
+        position: relative;
+        // enable creations of border using before
+        grid-area: a;
+        background-clip: border-box;
+
+        &::before {
+          // creates border surrounding leaderboard btn
+          position: absolute;
+          content: "";
+          width: 100%;
+          height: 100%;
+          left: -10px;
+          top: -10px;
+          border: 10px solid $peach-400;
+          border-radius: 28px;
+          border-top-left-radius: 29px;
+        }
+        &::after{
+          // cover up holes in gap
+          position: absolute;
+          content: "";
+          top: -10px;
+          right: -24px;
+          height: 18px;
+          width: 40px;
+          background-color: $peach-400;
+          border-radius: 100% 0% 47% 53% / 0% 0% 100% 100%;
+        }
+      }
+      .classic-btn{
+        position: relative;
+        display: flex;
+        align-items: center;
+        grid-area: b;
+
+        &::before{
+          // creates border surrounding classic btn
+          position: absolute;
+          content: "";
+          width: 100.1%;
+          height: 100%;
+          left: -10px;
+          border: 10px solid $peach-400;
+          border-top: 11px solid $peach-400;
+          border-radius: 28px;
+          border-top-left-radius: 29px;
+        }
+        &::after{
+          // covers up holes in gap
+          position: absolute;
+          content: "";
+          top: 90%;
+          left: -18px;
+          height: 15px;
+          width: 20px;
+          background-color: $peach-400;
+          border-radius: 49% 51% 100% 0% / 100% 100% 0% 0%;
+        }
+        h2{
+          width: 78%
+        }
+        p{
+          @extend %placeContentCenter;
+          position: absolute;
+          top: -13px;
+          right: 0;
+          // positions it properly to the left in classic button container
+
+          height: 100%;
+          border-radius: 0 20px 20px 0;
+          padding: 20px;
+          // adds padding , border-radius, height and background
+          .num{
+            font-size: 30px;
+          }
+          .best{
+            font-size: 14px;
+          }
+        }
+      }
+      .daily-puzzle-btn{
+        // house everything in daily puzzle
+        
+        position: relative;
+
+        display: flex;
+        grid-area: c;
+        align-items: center;
+        // vertically center "h2"
+        &::before{
+          // creates border surrounding daily puzzle btn
+          content: "";
+          position: absolute;
+          height: 100%;
+          width: 100.2%;
+          left: -10px;
+          border-radius: 28px;
+          border: 10px solid $peach-400;
+          border-top-left-radius: 29px;
+
+        }
+        h2{
+          // "daily puzzle" text style
+          width: 80.4%;
+          // centers it horizontally
+        }
+        .calender-cont{
+          // houses the calender img, month and day
+
+          position: relative;
+          padding: 30px 15px;
+          margin: -1px -4px 0 auto;
+          border-radius: 0 20px 20px 0 ;
+          .calender{
+            // calendar image
+            display: block;
+            // makes the image fit the entire container
+            transform: rotate(.042turn) scale(1.4);
+            // increases the size of the image and makes it straight
+          }
+
+          span{
+            // style inherited by day and month
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+          }
+          .month{
+            // month on calender img
+            top: 28px;
+            font-size: 14px;
+            // positions and fontsize
+          }
+          .day{
+            // day 0n calender img
+            bottom: 35px;
+          }
+        }
+      }
+      
+    }
+    .bottom{
+      width: 90%;
+      margin: 10px auto;
+
+      .w_together{
+        display: flex;
+        width: 100%;
+        border-radius: 20px;
+        background: linear-gradient(to right, $light-blue-100 83%,$light-blue-200 83%);
+        box-shadow: inset 0px -5px $light-blue-300;
+        &.not-connected{
+          filter: grayscale(100%);
+        }
+        p{
+          width: 82%;
+          
+          .title{
+            display: block;
+            // takes up the whole line
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 0px 1.2px 3px #000;
+          }
+          .message{
+            color: $light-blue-400;
+          }
+        }
+        .img-container{
+          @extend %placeContentCenter; 
+          margin-left: auto;
+          background: url("../../assets/Images/Ui/world.png") center/cover;
+          height: 70px;
+          width: 16.5%;
+          // makes image container align with the right gradient section
+        }
+        .vs{
+          display: block;
+          color: #fff;
+          font-size: 24px;
+          text-shadow: 0px 1px 2px  #000;
+        }
+      }
+    }
+  }
+  #menu{
+    background-color: hsl(0 0% 10% /.2);
+    display: flex;
+    
+    
+    button{
+      border-radius: 0;
+      border: none;
+      // removes defualt button style
+
+      height: 100px;
+      width: 80px;
+      background: $peach-100;
+      border-right:  2px solid #000;
+      border-left: 2px solid #000;
+      img{
+        width: 100%;
+      }
+    }
+
+    #settings-btn{
+      margin-left: auto;
+      margin-right: 10px;
+    }
+    #cart-btn{
+      margin-right: auto;
+    }
+    // centers it horizontally
+  }
+}
+@keyframes background-movement {
+  0%{
+    transform: rotate(-0.1turn) translate(-25%, -10%);  
+  }
+  50%{
+    transform: rotate(-0.1turn) translate(-30%, -10%);
+  }
+  100%{
+    transform: rotate(-0.1turn) translate(-25%, -10%);
+  }
+};
