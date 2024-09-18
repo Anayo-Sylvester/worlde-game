@@ -1,0 +1,43 @@
+@import "./config";
+
+%money-container {
+  position: relative;
+
+  display: flex;
+  // positions the money-amount in the center
+
+  border-radius: 30px;
+  background: hsl(0 0% 0% / .3);
+  color: hsl(0, 0%, 100%);
+  height: $money-size;
+  width: 100px;
+}
+%money-amount {
+  margin: auto;
+}
+
+%money-icon {
+  position: absolute;
+  height: $money-size;
+  right: 0;
+  top: 0;
+}
+
+%span {
+  $height:12.5px;
+  //used by both img(plus-sign) and span(img-container)
+
+  @include circularContent($height, $height);
+  @extend %placeContentCenter;
+  cursor: pointer;
+
+  position: absolute;
+  right: 1px;
+  bottom: 0px;
+  //display to remove it from being inline element 
+
+  background: hsl(126, 57%, 48%);
+  img{
+    height: $height;
+  }
+}

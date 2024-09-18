@@ -19,12 +19,12 @@ $no-progress:hsl(13, 52%, 45%); //default colour when there's no progress
 $money-size: 28.8px;
 @font-face {
   font-family: 'junegull';
-  src: url(../Fonts/junegull/junegull\ rg.otf);
+  src: url(../../assets/Fonts/junegull/junegull\ rg.otf);
 }
 
 @font-face {
   font-family: "open_sans";
-  src: url('../Fonts/Open_Sans/OpenSans-VariableFont_wdth_wght.ttf');
+  src: url('../../assets/Fonts/Open_Sans/OpenSans-VariableFont_wdth_wght.ttf');
   font-weight: 800;
 }
 :root{
@@ -39,7 +39,6 @@ $money-size: 28.8px;
   font-family: 'junegull';
 }
 body{
-  font-family: 'junegull';
   width: 100vw;
   margin: 0;
   padding: 0;
@@ -48,4 +47,19 @@ body{
 .spin-container,.no-ads-container,button{
   cursor: pointer;
 }
+a{
+  text-decoration: none;
+}
 
+
+@mixin circularContent($width: 65px, $height: 65px) {
+  width: $width;
+  height: $height;
+  border-radius: 50%;
+};
+
+%placeContentCenter {
+  display: grid;
+  place-content: center;
+  // places item in center of the container
+}

@@ -1,11 +1,7 @@
 @import './config';
+@import './shared';
 
 
-%placeContentCenter{
-  display: grid;
-  place-content: center;
-  // places item in center of the container
-}
 %cursorPointer{
   cursor: pointer;
   // when button is hovered over style is applied
@@ -16,11 +12,7 @@
   margin: auto 0;
   // centers it vertically and positions it to the right
 }
-@mixin circularContent($width: 65px,$height: 65px){
-  width: $width;
-  height: $height;
-  border-radius: 50%;
-};
+
 
 
 header{
@@ -195,52 +187,22 @@ header{
     }
   }
 
-
+    .money-container {
+      @extend %money-container;
+      margin: auto 0 10px auto;
   
- 
-  .money-container{
-    
-    position: relative;
-    
-    display: flex;
-    margin: auto 0 10px auto; 
-    align-items: center;
-    // positions the money in the center
-    
-    border-radius: 30px;
-    background: hsl(0 0% 0% / .3);
-    color: hsl(0, 0%, 100%);
-    height: $money-size;
-    width: 100px;
-
-    .money-amount{
-      margin-left: auto;
-      margin-right: 30px;
+      .money-amount {
+        @extend %money-amount;
+      }
+  
+      .money-icon {
+        @extend %money-icon;
+      }
+  
+      span {
+        @extend %span;
+      }
     }
-    .money-icon{
-      position: absolute;
-      height: $money-size;
-      right: 0;
-      top: 0;
-    }
-    span{
-      @include circularContent(50px,50px);
-      @extend %placeContentCenter;
-
-      cursor: pointer;
-
-      display: block;
-      position: absolute;
-      right: -18px;
-      bottom: -20px;
-      //display to remove it from being inline element 
-
-      transform: scale(0.25);
-      // determines the size of the increment
-
-      background:hsl(126, 57%, 48%);
-    }
-  }
 }
 
 
@@ -310,7 +272,7 @@ main{
       padding: 10px;
       margin: 0 2px;
       &::after{
-        // covers up holes in gap
+        // covers up holes in gap left side
         position: absolute;
         content: "";
         top: 37%;
@@ -321,13 +283,13 @@ main{
         border-radius: 0% 100% 100% 0% / 0% 63% 50% 100%;
       }
       &::before{
-        // covers up holes in gap
+        // covers up holes in gap in the right
         position: absolute;
         content: "";
         top: 37%;
-        right: 0;
-        height: 40px;
-        width: 15px;
+        right: 0.3px;
+        height: 42px;
+        width: 35px;
         background-color: $peach-400;
         border-radius: 100% 0% 0% 100% / 44% 100% 0% 56%;
       }
@@ -369,7 +331,7 @@ main{
           border-top-left-radius: 29px;
         }
         &::after{
-          // cover up holes in gap
+          // cover up hole in top position in gap
           position: absolute;
           content: "";
           top: -10px;
@@ -385,6 +347,8 @@ main{
         display: flex;
         align-items: center;
         grid-area: b;
+        color: #fff;
+        text-align: center;
 
         &::before{
           // creates border surrounding classic btn
@@ -399,7 +363,7 @@ main{
           border-top-left-radius: 29px;
         }
         &::after{
-          // covers up holes in gap
+          // covers up holes in center of gap
           position: absolute;
           content: "";
           top: 90%;
@@ -410,7 +374,7 @@ main{
           border-radius: 49% 51% 100% 0% / 100% 100% 0% 0%;
         }
         h2{
-          width: 78%
+          width: 78%;          
         }
         p{
           @extend %placeContentCenter;
@@ -445,7 +409,7 @@ main{
           content: "";
           position: absolute;
           height: 100%;
-          width: 100.2%;
+          width: 100.1%;
           left: -10px;
           border-radius: 28px;
           border: 10px solid $peach-400;
