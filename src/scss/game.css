@@ -172,6 +172,9 @@ main #keyboard .row button {
           user-select: none;
   border: none;
 }
+main #keyboard .row button.disabled {
+  pointer-events: none;
+}
 main #keyboard .row button.wrong {
   color: #fff;
   background: #807E89;

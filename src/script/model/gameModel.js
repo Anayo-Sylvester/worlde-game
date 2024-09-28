@@ -2,23 +2,23 @@ export class Model{
   
   constructor(){
     this.wordleArray = JSON.parse(localStorage.getItem('worldeArray')) || [[],[],[],[],[]];
-    this.score = JSON.parse(localStorage.getItem('score')) || 0;
-    this.highestScore = JSON.parse(localStorage.getItem("highestScore")) || 0;
+    this.level = JSON.parse(localStorage.getItem('level')) || 0;
+    this.highestLevel = JSON.parse(localStorage.getItem("highestLevel")) || 0;
     this.level = JSON.parse(localStorage.getItem('level')) || 1;
-    
+    this.word;
   }
 
-  addToArray(input){
-    for(let i=0; i < this.wordleArray.length; i++){
-      if(this.wordleArray[i].length < 5){
-        this.wordleArray[i].push(input);
-        break;
-      }
-    }
+  addToArray(id,input){
+    this.wordleArray[id].push({
+      "key" : input,
+      "class": []
+    });
+    this.saveArray();
   }
 
-  removeFromArray(rowId,colId){
-    this.wordleArray[rowId].splice(colId);
+  removeFromArray(rowId){
+    this.wordleArray[rowId].pop();
+    this.saveArray()
   }
 
   saveArray(){
@@ -27,27 +27,30 @@ export class Model{
 
   clearArray(){
     localStorage.clear('worldeArray');
+    this.saveArray();
   }
 
-  increaseScore(){
-    this.score++
+  increaseLevel(){
+    console.log('level: ',this.level);
+    this.level++;
+    this.saveLevel();
   }
 
-  saveScore(){
-    localStorage.setItem("score",JSON.stringify(score));
+  saveLevel(){
+    localStorage.setItem("level",JSON.stringify(this.level));
   }
 
-  resetScore(){
-    localStorage.clear("score");
+  resetLevel(){
+    localStorage.clear("level");
   }
 
-  setHighScore(){
-    if (this.score = this.highestScore){
-      this.highestScore = this.score;
+  setHighLevel(){
+    if (this.level = this.highestLevel){
+      this.highestLevel = this.level;
     }
   }
   
-  async  loadWords(){
+  async  loadWordsData(){
     try{
       const res = await fetch("../../../assets/json/words.json");
         
@@ -64,6 +67,13 @@ export class Model{
     }
 
   }
-
   
+  increaseLevel(){
+    this.level++;
+    this.saveLevel();
+  }
+
+  clearLevel(){
+    localStorage.clear('level');
+  }
 }
