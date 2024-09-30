@@ -1,79 +1,68 @@
-export class Model{
-  
-  constructor(){
-    this.wordleArray = JSON.parse(localStorage.getItem('worldeArray')) || [[],[],[],[],[]];
-    this.level = JSON.parse(localStorage.getItem('level')) || 0;
-    this.highestLevel = JSON.parse(localStorage.getItem("highestLevel")) || 0;
-    this.level = JSON.parse(localStorage.getItem('level')) || 1;
-    this.word;
+export class Model {
+
+  // Constant for the default data structure
+  static DEFAULT_DATA = {
+    level: 1,
+    id:0,
+    array: [[], [], [], [], []]
+  };
+
+  constructor() { 
+    this.wordleData = JSON.parse(localStorage.getItem('wordleData')) || JSON.parse(JSON.stringify(Model.DEFAULT_DATA));
+    this.word = null;  // Assuming this is for storing a word, initialized as null
   }
 
-  addToArray(id,input){
-    this.wordleArray[id].push({
-      "key" : input,
-      "class": []
+  increaseLevel() {
+    console.log('level: ', this.wordleData.level);
+    this.wordleData.level++;
+    this.saveData();
+  }
+
+  addToArray(id, input) {
+    this.wordleData.array[id].push({
+      key: input,
+      class: []
     });
-    this.saveArray();
+    this.saveData();
   }
 
-  removeFromArray(rowId){
-    this.wordleArray[rowId].pop();
-    this.saveArray()
+  removeFromArray(rowId) {
+    this.wordleData.array[rowId].pop();
+    this.saveData();
   }
 
-  saveArray(){
-    localStorage.setItem('worldeArray',JSON.stringify(this.wordleArray));
+  saveData() {
+    localStorage.setItem('wordleData', JSON.stringify(this.wordleData));
   }
 
-  clearArray(){
-    localStorage.clear('worldeArray');
-    this.saveArray();
+  clearArray() {
+    // Reset the array to the default empty structure
+    this.wordleData.array = [[], [], [], [], []];
+    this.saveData();
   }
 
-  increaseLevel(){
-    console.log('level: ',this.level);
-    this.level++;
-    this.saveLevel();
-  }
 
-  saveLevel(){
-    localStorage.setItem("level",JSON.stringify(this.level));
-  }
 
-  resetLevel(){
-    localStorage.clear("level");
-  }
-
-  setHighLevel(){
-    if (this.level = this.highestLevel){
-      this.highestLevel = this.level;
-    }
-  }
-  
-  async  loadWordsData(){
-    try{
+  async loadWordsData() {
+    try {
       const res = await fetch("../../../assets/json/words.json");
-        
-      if(res.ok != true){
-        throw new Error("Bad response");   
+
+      if (res.ok !== true) {
+        throw new Error("Bad response");
       }
 
       const data = await res.json();
-
+      this.ap = data;
       return data;
+    } catch (err) {
+      console.log(err);
     }
-    catch(err){
-      console.log(err)
-    }
-
-  }
-  
-  increaseLevel(){
-    this.level++;
-    this.saveLevel();
   }
 
-  clearLevel(){
-    localStorage.clear('level');
+  resetData() {
+    // Reset wordleData to the default structure
+    this.wordleData = JSON.parse(JSON.stringify(Model.DEFAULT_DATA));
+    this.saveData();  // Ensure the reset data is saved in localStorage
   }
 }
+

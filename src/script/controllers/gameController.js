@@ -1,30 +1,34 @@
 // latter address all * using find
+
 export class Controller{
   #model;
- #view;
-  #word;
+  #view;
+  #wordId;
+  #jsonData;
   #sound;
 
   constructor(_model,_view){
     this.#model = _model;
     this.#view = _view;
-    this.#word;
+    this.#wordId = JSON.parse(localStorage.getItem('wordId'));
+    this.#jsonData;
     this.n0OfColumn = 5;
-    this.levelCompletionTimeLine = 5000;
+    this.levelCompletionTimeLine = 5000;//5 sec
   }
 
   overallUiGeneration(){
     this.handleLevelGeneration();
+    this.inputLevelInUi();
     this.handleWordleCellGeneration();
     this.handleKeyboardGeneration();
     this.handleButtonClick(this.#view.buttonClickSound);
   }
 
   handleWordleCellGeneration(){
-    let worlde = this.#model.wordleArray;
+    let worldeArrray = this.#model.wordleData.array;
     let worldeInputHTML = '';
 
-    worlde.forEach((array,id) => {
+    worldeArrray.forEach((array,id) => {
       for(let j = 0;j <= 4; j++){
         
         // check if the array isn't empty so its' key can be accessed
@@ -47,41 +51,79 @@ export class Controller{
 
     this.#view.inputContainer.innerHTML = worldeInputHTML;
   }
-
-  handleAddToArray(letter){
-    const array = this.#model.wordleArray; 
-    for(let i=0; i < array.length; i++){
-
-      //checks if array is less than 5 before it adds element to it
-      if(array[i].length < this.n0OfColumn){
-        this.#model.addToArray(i,letter); //(id ,letter)
-
-          //checks if array length is 5 after adding letter, in other to compare letters in word with letters in array
-          if(array[i].length == this.n0OfColumn){
-            this.generateAttributesFromWord(array[i]);
-            this.addAttributetoKeyboardKeys(array[i]);
-            
-            let activationThreshold = 0;//var is used to determine if correct word is entered
-
-            array[i].forEach(arr=>{
-              if(arr.class[0] === this.#view.rLrP){
-                console.log(`array class: ${arr.class[0]} class:${this.#view.rLrP}`)
-                activationThreshold++;
-              }
-              if(activationThreshold === this.n0OfColumn){ //if the correct (rLrP) lettter class is found 5 times then level is completed;
-                //this.levelCompleted();
-              }
-            })
-            
+  
+  handleAddToArray(letter) {
+    const { array } = this.#model.wordleData;
+    let activationThreshold = 0; // Used to determine if the correct word is entered
+    let isArrayFullButIncorrect = false;
+  
+    for (let i = 0; i < array.length; i++) {
+      
+      // Checks if array length is less than 5 to ensure we can add letter to it
+      if (array[i].length < this.n0OfColumn) {
+        this.#model.addToArray(i, letter); // (id, letter)
+  
+        // Checks if array is full after adding letter, if full the inputs are validated
+        if (array[i].length === this.n0OfColumn) {
+          this.generateAttributesFromWord(array[i]);
+          this.addAttributetoKeyboardKeys(array[i]);
+  
+          // Check if any letters are guessed correctly (rLrP)
+          array[i].forEach(arr => {
+            if (arr.class[0] === this.#view.rLrP) {
+              activationThreshold++;
+            }
+          });
+  
+          // If the correct (rLrP) letter class is found 5 times, level is completed
+          if (activationThreshold === this.n0OfColumn) {
+            console.log(`activation: ${activationThreshold} step 4`);
+            //this.handleWordleCellGeneration();
+            this.levelCompleted();
+            return; // Exit the handleAddToArray function completely
+          } else if(i === array.length - 1) {
+            // Set flag to true if array is full but incorrect
+            isArrayFullButIncorrect = true;
           }
-        break;
+        }
+        break; // Breaks out of the for loop after handling one array element
       }
     }
-    this.overallUiGeneration();
+  
+    // Run this check only once if the array is full but incorrect
+    if (isArrayFullButIncorrect) {
+      this.overallUiGeneration();
+      this.checksIfArrayIsFull(array);
+    }
+  
+    // Executes if the input array is not filled and the word is not fully correct
+    if (!isArrayFullButIncorrect) {
+      this.overallUiGeneration();
+    }
   }
+  
 
+  //array being full means the user failed to guess the right word
+  checksIfArrayIsFull(array){
+    console.log('checking');
+    console.log(array);
+    let activationThreshold = 0;
+    array.some(arr=>{
+      if(arr.length === 5){
+        activationThreshold++;
+      }else{
+        return true;
+      }
+    })
+
+    if(activationThreshold === array.length){
+      console.log('full');
+      this.levelCompleted(false);
+      return true;
+    }
+  }
   handleRemoveFromArray(){
-    const array = this.#model.wordleArray;
+    const {array} = this.#model.wordleData;
 
     array.some((arr,rowId)=>{
       const id = arr.length  -1;
@@ -95,16 +137,16 @@ export class Controller{
     this.handleWordleCellGeneration();
   }
 
-  /* * remove all as it is incorporated in model*/handleSaveArray(){
-    this.#model.saveArray()
-  }
-
   handleClearArray(){
     this.#model.clearArray();
   }
 
-  handleKeyboardGeneration(){
-    this.#view.generateKeyboard();
+  handleSaveWordleData(){
+    this.#model.saveData();
+  }
+
+  handleKeyboardGeneration(disabled = false){
+    this.#view.generateKeyboard(disabled);
   }
 
   handleClearKeyboard(){
@@ -123,7 +165,6 @@ export class Controller{
         if (button.innerText.length == 1){ 
           // ensures only letters are added to array
           this.handleAddToArray(button.innerText);
-          console.log(button.type)
         }else if(button.dataset.data == "backspace") {
           this.handleRemoveFromArray();
           this.handleWordleCellGeneration();
@@ -132,39 +173,85 @@ export class Controller{
     })
   }
 
-  handleLevelGeneration() {
-    const { level } = this.#model;
+  inputLevelInUi() {
+    const { level } = this.#model.wordleData;
     this.#view.inputLevel(level); // inputs the level in view
-
-    // level word generation
-    const getWord = async (id) => {
+  }
+  
+  handleLevelGeneration() {
+    if (!this.#wordId) {
+      const { level } = this.#model.wordleData;
+      this.#view.inputLevel(level); // inputs the level in view
+      let data;
+  
+      // level word generation
+      const getWord = async () => {
         try {
-            const data = await this.#model.loadWordsData();
-            this.#word = data[id].word;
+          await this.loadWordleData();
+  
+          // Ensures #jsonData is available before proceeding
+          if (this.#jsonData && this.#jsonData.length > 0) {
+            let max = this.#jsonData.length - 1;
+            let min = 0;
 
+            const id = Math.round(Math.random() * (max - min) + min);
+            this.#wordId = id;
+            this.saveWordId();
+  
+            console.log(`Word ID selected: ${this.#wordId}`);
+            console.log(`json data: ${this.#jsonData}`)
+            console.log(`Selected Word: ${this.#jsonData[this.#wordId].word}`);
+          } else {
+            console.error('No word data available!');
+          }
         } catch (err) {
-            console.error("Error loading word data:", err); // Provide a meaningful error message *
+          console.error("Error loading word data:", err);
         }
-    };
-
-    getWord(level - 1);
+      };
+  
+      // Wait for word data to be fetched and assigned
+      getWord().then(() => {
+        if (this.#jsonData && this.#wordId !== undefined) {
+          console.log(`Loaded word: ${this.#jsonData[this.#wordId].word}`);
+        } else {
+          console.error('Failed to load word data.');
+        }
+      });
+    }
   }
 
+  async loadWordleData(){
+    try{
+      const data = await this.#model.loadWordsData();
+      this.#jsonData = data;
+    }catch(err){
+      console.error(err)
+    }
+  }
+  
+  saveWordId(){
+    localStorage.setItem('wordId',JSON.stringify(this.#wordId))
+  }
+
+  clearWordId(){
+    this.#wordId = undefined;
+    this.saveWordId();
+  }
+  
   handleLevelIncrease(){
+    console.log('handle');
     this.#model.increaseLevel();
   }
 
   //used in handleAddToArray() used when the 5 letters are inputed in an array *rename
   generateAttributesFromWord(array){
-    const word = this.convertToUpperCase(this.#word);
-    console.log(word)
-    console.log(array);
+    console.log(this.#jsonData)
+    const word = this.convertToUpperCase(this.#jsonData[this.#wordId].word);
 
     array.forEach((arr,id) =>{
       let key = this.convertToUpperCase(arr.key);
 
       if(word[id] === key){ //checks if word and key letter is the same it adds class
-        console.log(word[id]);
         arr.class.push(this.#view.rLrP); 
       }
       else{
@@ -231,18 +318,28 @@ export class Controller{
     this.#view.saveKeyboard();
   }
 
-  async levelCompleted(){
-    this.#view.toggleKeyboardKeys(true);
-    this.#model.increaseLevel()
-    this.handleClearArray();
+  levelCompleted(status = true){
+    console.log(`status: ${status}`);
     this.handleClearKeyboard();
-    this.#view.playSound(this.#view.victorySound);
+    this.handleKeyboardGeneration(true);
+    this.handleClearArray();
+    if(status){
+      this.handleLevelIncrease();
+      this.handleSoundGeneration(this.#view.victorySound);//plays victory sound
+    }else{
+      this.handleSoundGeneration(this.#view.failSound);//plays lose sound
+    }
+    this.handleSaveWordleData();// fixes the issue of the game data reseting in it's empty
     console.log(this.levelCompletionTimeLine)
 
     setTimeout(()=>{
-      console.log('done')
+      this.clearWordId();
       this.overallUiGeneration();
-    },10000/*this.levelCompletionTimeLine*/)
+    },this.levelCompletionTimeLine)
+  }
+
+  levelFailed(){
+
   }
 
   //utilities
