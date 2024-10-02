@@ -152,6 +152,9 @@ main{
         box-shadow: hsl(240, 1%, 58%);
         border-radius: 25px;
         width: 20vw;
+        &.active{
+          background: hsl(120, 100%, 22%);
+        }
       }
     }
   }

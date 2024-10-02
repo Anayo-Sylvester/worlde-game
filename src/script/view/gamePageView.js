@@ -1,7 +1,6 @@
 "use strict";
 
-import { Controller } from "../controllers/gameController.js";
-import { Model } from "../model/gameModel.js";
+
 
 // Define the default keyboard structure
 export const inputContainer = document.querySelector("#input");
@@ -12,8 +11,7 @@ export class View {
     static DEFAULT_KEYBOARD_LAYOUT = [
         [{ key: 'q' }, { key: 'w' }, { key: 'e' }, { key: 'r' }, { key: 't' }, { key: 'y' }, { key: 'u' }, { key: 'i' }, { key: 'o' }, { key: 'p' }],
         [{ key: 'a' }, { key: 's' }, { key: 'd' }, { key: 'f' }, { key: 'g' }, { key: 'h' }, { key: 'j' }, { key: 'k' }, { key: 'l' }],
-        [{ key: 'z' }, { key: 'x' }, { key: 'c' }, { key: 'v' }, { key: 'b' }, { key: 'n' }, { key: 'm' }, { key: '<img src="../assets/Images/buttons/backspace.png" alt="backspace">', data: 'backspace' }],
-        [{ key: 'submit', class: "submit", type: "submit" }]
+        [{ key: 'z' }, { key: 'x' }, { key: 'c' }, { key: 'v' }, { key: 'b' }, { key: 'n' }, { key: 'm' }, { key: '<img src="../assets/Images/buttons/backspace.png" alt="backspace">', data: 'backspace' }]
     ];//if editted also edit in resetKeyboard()
 
     constructor() {
@@ -41,11 +39,10 @@ export class View {
 
     createInputCell(value, rowId, colId, _class, property) {
         // creates span elements which houses inputs
-        return `<span data-row-id=${rowId} data-col-id=${colId} class="${_class || ''}">${value ? value : ''}</span>`;
+        return `<span data-row-id=${rowId} data-col-id=${colId} class="${_class  || ''}">${value ? value : ''}</span>`;
     }
 
-    generateKeyboard(disabled = false) {
-        console.log(`disabled :${disabled}`)
+    generateOrDisableKeyboard(shoulDisableKeyboardKeys = false) {
 
         // Creates the keyboard and optionally disables it
 
@@ -57,12 +54,13 @@ export class View {
             row.classList.add('row');  // Creates row and add class to it
 
             keyRow.forEach((keys, keyId) => {
+                
                 keyboardContainerHTML += `
                     <button 
-                        ${keys.class ? `class="${keys.class || ""}"` : ""}
-                        ${keys.data ? `data-data="${keys.data}"` : ''}
-                        type="${keys.type || "button"}"
-                        ${disabled ? 'disabled' : ''}
+                       ${generateClass(keys.class)}
+                       ${generateDataset(keys.data)}
+                       ${generateButtonType(keys.type)}     
+                       ${genDisabledAtrri(shoulDisableKeyboardKeys)} 
                     >
                         ${keys.key}
                     </button>`;
@@ -71,6 +69,24 @@ export class View {
             row.innerHTML = keyboardContainerHTML;
             this.keyboardContainer.append(row);  // Adds row with innerHtml to keyboard
         });
+
+        function generateClass(_class){
+            return `${_class ? `class="${_class || ""}"` : ""}`
+        }
+
+        function generateDataset(data){
+            return `${data ? `data-data="${data}"` : ''}`;
+        }
+        function generateButtonType(type){
+            return `type="${type || "button"}"`
+        }
+        function genDisabledAtrri(_shoulDisableKeyboardKeys){
+            return `${_shoulDisableKeyboardKeys ? 'disabled' : ''}`
+        }
+
+        if(!shoulDisableKeyboardKeys){
+            this.saveKeyboard();
+        }
     }
 
     addClassToKeys(rowId, keyId, _class) {
@@ -106,12 +122,6 @@ export class View {
     // New function to disable or enable the keyboard
     toggleKeyboardState(disable) {
         // Call generateKeyboard and pass the disable state
-        this.generateKeyboard(disable);
+        this.generateOrDisableKeyboard(disable);
     }
 }
-
-
-export const wordle = new Controller(new Model(), new View());
-
-wordle.loadWordleData();
-wordle.overallUiGeneration(); 

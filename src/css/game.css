@@ -172,6 +172,9 @@ main #keyboard .row button {
           user-select: none;
   border: none;
 }
+main #keyboard .row button.disabled {
+  pointer-events: none;
+}
 main #keyboard .row button.wrong {
   color: #fff;
   background: #807E89;
@@ -189,4 +192,7 @@ main #keyboard .row .submit {
   box-shadow: hsl(240, 1%, 58%);
   border-radius: 25px;
   width: 20vw;
+}
+main #keyboard .row .submit.active {
+  background: hsl(120, 100%, 22%);
 }/*# sourceMappingURL=game.css.map */

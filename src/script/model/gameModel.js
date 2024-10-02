@@ -52,7 +52,7 @@ export class Model {
       }
 
       const data = await res.json();
-      this.ap = data;
+      // this.ap = data;
       return data;
     } catch (err) {
       console.log(err);
