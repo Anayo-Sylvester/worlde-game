@@ -1,7 +1,6 @@
 "use strict";
 
 
-
 // Define the default keyboard structure
 export const inputContainer = document.querySelector("#input");
 export const keyboardContainer = document.querySelector('#keyboard');
@@ -20,6 +19,7 @@ export class View {
         this.wL = "wrong";  // class for wrong letter
         this.inputContainer = document.querySelector("#input");
         this.keyboardContainer = document.querySelector('#keyboard');
+        this.alertContainer = document.querySelector('#alert');
         this.inputCellAmount = 30;
         this.deleteImg = `<img src="../assets/Images/buttons/backspace.png" alt="backspace">`;
 
@@ -123,5 +123,26 @@ export class View {
     toggleKeyboardState(disable) {
         // Call generateKeyboard and pass the disable state
         this.generateOrDisableKeyboard(disable);
+    }
+
+    generateAlertMessage(enable = false,message = '', status = ''){
+        this.alertContainer.querySelector('p').innerText = message;
+        if(enable){
+            this.alertContainer.classList.add('active');
+            console.log({status})
+            if(status === ""){
+                this.alertContainer.querySelector('img').src = '';
+                this.alertContainer.querySelector('img').alt = '';
+            }
+            else if(status === 'error'){
+                this.alertContainer.querySelector('img').src = '../assets/Images/alert/alert-error-svg.svg';
+                this.alertContainer.querySelector('img').alt = 'Error icon';
+            }else if(status === 'loading'){
+                this.alertContainer.querySelector('img').src = '../assets/Images/alert/loading.gif';
+                this.alertContainer.querySelector('img').alt = 'Loading animation';
+            }
+        }else{
+            this.alertContainer.classList.remove('active');            
+        }
     }
 }

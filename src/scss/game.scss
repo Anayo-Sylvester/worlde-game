@@ -6,23 +6,14 @@ body{
 
 header{
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 15px 5px;
   border: 2px;
-
-  .back{
-    // back arrow style
-    @extend %placeContentCenter;
-
-    color: #fff;
-    width: fit-content;
-    font-size: 60px;
-  }
   
   .level-container{
     position: relative;
     height: fit-content;
-    margin: auto -70px auto 0; //-70px centers it horizontally
+    margin: auto 0 auto 0; //- centers it horizontally
    //spacing and position
 
 
@@ -49,23 +40,6 @@ header{
         height: $height;
         width: auto;
       }
-    }
-  }
-
-  .money-container {
-    @extend %money-container;
-    margin: auto 0;// 0 10px auto;
-
-    .money-amount {
-      @extend %money-amount;
-    }
-
-    .money-icon {
-      @extend %money-icon;
-    }
-
-    span {
-      @extend %span;
     }
   }
 }
@@ -98,6 +72,22 @@ main{
         background: hsl(120, 34%, 58%);
         border: none;
       }
+    }
+  }
+  #alert{
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    align-items: center;
+    margin-left: 110%;
+    transition: .1s;
+    &.active{
+      margin-left:0%;
+      transition: .1s;
+    }
+    img{
+      margin-right: 10px;
+      height: 20px;
     }
   }
   #keyboard{
@@ -143,17 +133,6 @@ main{
         &:active{
           background: hsl(0, 1%, 28%);
           color: #fff;
-        }
-      }
-      .submit {
-        @extend %shared;
-        color: hsl(0, 0%, 100%);
-        background: hsl(0, 1%, 57%);
-        box-shadow: hsl(240, 1%, 58%);
-        border-radius: 25px;
-        width: 20vw;
-        &.active{
-          background: hsl(120, 100%, 22%);
         }
       }
     }

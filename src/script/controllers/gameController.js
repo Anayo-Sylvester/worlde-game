@@ -1,5 +1,5 @@
 // latter address all * using find
-
+let a = 0;
 export class Controller{
   #model;
   #view;
@@ -23,10 +23,10 @@ export class Controller{
     this.handleLevelGeneration();
     this.inputLevelInUi();
     this.checkIfWordLengthIsReached();
-    console.log('overallUIGeneration');
     this.handleWordleCellGeneration();
     this.handleKeyboardGeneration();
-    this.handleButtonClick(this.#view.buttonClickSound);
+    this.handleEventListeners();
+    this.handleAlertMessageGeneration()
   }
 
   handleWordleCellGeneration(){
@@ -61,13 +61,16 @@ export class Controller{
     this.#view.saveKeyboard();
   }
 
+  handleAlertMessageGeneration(enable = false,message = '',status = ''){
+    this.#view.generateAlertMessage(enable,message,status);
+  }
+
   async handleAddToArray(letter) {
     const { array } = await this.#model.wordleData;
     this.isMaxLengthReached = false;
     let i;
     const previousLength = array.length
     for (i = 0; i < array.length; i++) {
-      console.log({i})
       // Checks if guessed word length is less than the maximum allowed
       if (array[i].length < this.n0OfColumn) {
         // Ensure that i > 0 before accessing array[i - 1]
@@ -90,105 +93,107 @@ export class Controller{
   }
   
   async checkIfWordLengthIsReached() {
-    console.log('q');
     const { array } = await this.#model.wordleData;
 
     // Checks if array length is reached and if it has been validated
     for (let id = 0; id < array.length; id++) {
         const arr = array[id];
         
-        // check if word length is reached
-        if (arr.length === this.n0OfColumn) {
-            const isWordValidated = !!arr[arr.length - 1].class.length; 
-            
-            if (!isWordValidated) {
-                const isGuessValid = await this.validateGuessWithDictionary(arr);
-                 console.log({isGuessValid});
+        // check if word length is reached and if it has been assigned a class for styling since only verified words are styled.
+        if (arr.length === this.n0OfColumn && !arr[arr.length - 1].class[0]) {
+          
+          this.handleAlertMessageGeneration(true,'checking if word is valid','loading');
 
-                if(isGuessValid){
+          const isGuessValid = await this.validateGuessWithDictionary(arr);
 
-                  const {noOfRightPlacedLetterInWord,arrayIndex} = await this.addAttributesToWordInArray(array[id],id);
-                  this.addAttributetoKeyboardKeys(array[id]);
+          if(isGuessValid.isWord){
 
-                  this.handleWordleCellGeneration();
-                  this.handleKeyboardGeneration();
+            const {noOfRightPlacedLetterInWord,arrayIndex} = await this.addAttributesToWordInArray(array[id],id);
+            this.addAttributetoKeyboardKeys(array[id]);
 
-                  this.handleButtonClick(this.#view.buttonClickSound);
+            this.handleWordleCellGeneration();
+            this.handleKeyboardGeneration();
 
-                  console.log({noOfRightPlacedLetterInWord})
+            this.handleEventListeners();
 
-                  if(noOfRightPlacedLetterInWord === this.n0OfColumn){
-                    this.levelCompleted(true);
-                    return;
-                  }else if(arrayIndex + 1 === 5){// checks if the array is full and no more space to add letter
-                    this.levelCompleted(false);
-                    return;
-                  }
-                }else{
-                  console.log('invalid word');
-                  this.handleWordleCellGeneration();
-                  this.handleKeyboardGeneration();
-                  this.handleButtonClick(this.#view.buttonClickSound);
-                }
 
-                // Check if next element is either undefined or doesn't match the expected length
-                if (!array[id + 1] || array[id + 1].length !== this.n0OfColumn) {
-                  console.log(array.length);
-                  if(id + 1 > array.length){
-                    this.levelCompleted(false);
-                  }
-                    break; // Exit the loop
-                }
-            }else{
-              console.log('invalid word');;
+            if(noOfRightPlacedLetterInWord === this.n0OfColumn){
+              this.levelCompleted(true);
+              return;
+            }else if(arrayIndex + 1 === 5){// checks if the array is full and no more space to add letter
+              this.levelCompleted(false);
+              return;
             }
-        } else {
-            console.log('qw');
-            break; // Exit the loop for the first non-matching array
+          }else{
+            if(isGuessValid.isThereNetwork){
+              this.handleAlertMessageGeneration(true,'not a word','error');
+            }else{
+              this.handleAlertMessageGeneration(true,'Please, connect to internet and reload','error');
+
+            }
+            this.handleWordleCellGeneration();
+            this.handleKeyboardGeneration();
+            this.handleEventListeners();
+          }
+
+          // Check if next element is either undefined or doesn't match the expected length
+          if (!array[id + 1] || array[id + 1].length !== this.n0OfColumn) {
+            if(id + 1 > array.length){
+              this.levelCompleted(false);
+            }
+              break; // Exit the loop
+          }
+            
         }
     }
 }
 
   async validateGuessWithDictionary(array){
     try{
-      console.log('hey');
-      this.handleKeyboardGeneration(true);//(shoulDisableKeyboardKeys = false) prevent user from inputing word when checking if word is valid
+      //prevent user from inputing word when checking if word is valid
+      this.handleKeyboardGeneration(true);//(shoulDisableKeyboardKeys) 
+      this.handleEventListeners(true);//(disableKeyboard);
+
 
       this.validateGuessRowArray = await array;
 
       const word =  this.convertArrayToWord(array); // Convert the array into a word
-      console.log({word});
       const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`);
       const data = await res.json();
 
+      let returnObj = {
+                  isWord: true,
+                  isThereNetwork: true
+                };
+
       if(data[0]){
-        return true;
+        this.handleAlertMessageGeneration();
+        return returnObj;
       }else{
-        return false;
+        this.handleAlertMessageGeneration(true,'Not a valid word','error');
+        returnObj.isWord = false;
+        return returnObj;
       }
 
     }catch(err){
-      console.error(`error: `,err);
-      return false;
+      return false; // won't return returnObj
     }
   }
   
 
-  //array being full means the user failed to guess the right word
+  //checks if the user used up all chances toguess the right word
   checksIfArrayIsFull(array){
-    console.log('checking');
-    console.log(array);
     let activationThreshold = 0;
+  //checks if the lenght of every word in wordle data array reached max length
     array.some(arr=>{
       if(arr.length === 5){
-        activationThreshold++;
+        activationThreshold++; // increase when a word of max length is reached
       }else{
         return true;
       }
     })
 
-    if(activationThreshold === array.length){
-      console.log('full');
+    if(activationThreshold === array.length){// if the number of words with max length is the same with the number of max words in the array
       this.levelCompleted(false);
       return true;
     }
@@ -196,11 +201,9 @@ export class Controller{
 
   deleteLastLetterFromArray(){
     const {array} = this.#model.wordleData;
-
     array.some((arr,rowId)=>{
       const id = arr.length  -1;
       if(id>=0){//prevents error when array is empty
-        console.log(arr[id].class[0])
         if(!arr[id].class[0]){//cheacks if the last value in array has class if not then it means it hasn't been verified then it's removed
           this.#model.removeFromArray(rowId);//(rowId);
           return true;
@@ -230,22 +233,52 @@ export class Controller{
     this.#view.playSound(sound)
   }
 
-  handleButtonClick(sound){
-    this.#view.keyboardContainer.querySelectorAll('button').forEach(button=>{
-      button.addEventListener('click',()=>{
-        this.handleSoundGeneration(sound);
-        
-        if (button.innerText.length == 1){ 
-          // ensures only letters are added to array
-          this.handleAddToArray(button.innerText);
-        }else if(button.dataset.data === "backspace") {
-          this.deleteLastLetterFromArray();
-          this.handleWordleCellGeneration();
-        }
-      })
-    })
-  }
+  
+  handleEventListeners(disableKeyboard = false) {
+    const sound = this.#view.buttonClickSound;
+    // Add event listener for on-screen keyboard buttons
+    this.#view.keyboardContainer.querySelectorAll('button').forEach(button => {
+      button.addEventListener('click', () => {
 
+        this.handleSoundGeneration(sound);
+  
+        if (this.isCharacterAnEnglishLetter(button.innerText)) {
+          // Ensure only letters are added to the array
+          this.handleAddToArray(button.innerText);
+        } else {
+          this.deleteLastLetterFromArray();
+          this.handleAlertMessageGeneration();
+        }
+      });
+    });
+
+    if(!disableKeyboard){
+    // Add keyup event listener that runs only once
+    document.addEventListener('keyup', this.handleKeyup, { once: true });
+    }else{
+      document.removeEventListener('keyup', this.handleKeyup);
+    }
+  }
+  
+  // Define the keyup handler as a method
+  handleKeyup = (event) => {
+    const {key} = event;
+    this.handleSoundGeneration(this.#view.buttonClickSound);
+    if (this.isCharacterAnEnglishLetter(key)){
+      this.handleAddToArray(key);
+    }else if(key === "Backspace" || key === "Delete"){
+      this.deleteLastLetterFromArray();
+      this.handleAlertMessageGeneration();
+    }
+
+  
+    // After the keyup event, we want to re-enable the listener
+    this.handleEventListeners();
+  };
+  
+  isCharacterAnEnglishLetter(char){
+    return (/[a-zA-Z]/).test(char) && char.length === 1
+  }
   inputLevelInUi() {
     const { level } = this.#model.wordleData;
     this.#view.inputLevel(level); // inputs the level in view
@@ -260,7 +293,6 @@ export class Controller{
       // level word generation
       const getWord = async () => {
         try {
-          await this.loadWordleData();
   
           // Ensures #jsonData is available before proceeding
           if (this.#jsonData && this.#jsonData.length > 0) {
@@ -270,23 +302,20 @@ export class Controller{
             const id = Math.round(Math.random() * (max - min) + min);
             this.#wordId = id;
             this.saveWordId();
-  
-            console.log(`Word ID selected: ${this.#wordId}`);
-            console.log(`json data: ${this.#jsonData}`)
-            console.log(`Selected Word: ${this.#jsonData[this.#wordId].word}`);
           } else {
-            console.error('No word data available!');
+            this.handleAlertMessageGeneration(true,`couldn't fetch wordle data`,'error')
           }
         } catch (err) {
-          console.error("Error loading word data:", err);
+          this.handleAlertMessageGeneration(true,`Error fetching word data`)
         }
       };
   
       // Wait for word data to be fetched and assigned
       getWord().then(() => {
         if (this.#jsonData && this.#wordId !== undefined) {
-          console.log(`Loaded word: ${this.#jsonData[this.#wordId].word}`);
+          
         } else {
+          this.handleAlertMessageGeneration(true,'Failed to load word data.','error');
           console.error('Failed to load word data.');
         }
       });
@@ -297,7 +326,8 @@ export class Controller{
     try{
       const data = await this.#model.loadWordsData();
       this.#jsonData = await data;
-      this.overallUiGeneration();
+
+      this.overallUiGeneration();// prevent ui loading before data in screen when called together in main.js
     }catch(err){
       console.error(err)
     }
@@ -313,24 +343,19 @@ export class Controller{
   }
   
   handleLevelIncrease(){
-    console.log('handle');
     this.#model.increaseLevel();
   }
 
   //used in validateGuessRow() used when the 5 letters are inputed in an array *rename
   async addAttributesToWordInArray(array,index){
     const word = await this.convertToUpperCase(this.#jsonData[this.#wordId].word);
-    console.log('json data: ',word);
-    //const _word = await this.convertToUpperCase(this.#jsonData[this.#wordId].word)
 
     let activationThreshold = 0;
     //let arrayClone = JSON.parse(JSON.stringify(array))
 
     array.forEach((arr,id) =>{
-    console.log({index})
-    console.log({arr: arr.key})
+
       let key = this.convertToUpperCase(arr.key);
-      console.log({key,wordid : word[id]})
       if(word[id] === key){ //checks if word and key letter is the same it adds class
         arr.class.push(this.#view.rLrP); 
         activationThreshold++;
@@ -340,7 +365,6 @@ export class Controller{
 
           if(word[i] === key){//checks if letter in word is found in array but in wLwP placement      
             arr.class.push(this.#view.rLwP);
-            console.log('rLwP');
             break;
           }
           else if(i === word.length - 1){//if letter isn't found in word. 
@@ -399,18 +423,19 @@ export class Controller{
   }
 
   levelCompleted(status = true){
-    console.log(`status: ${status}`);
     this.handleClearKeyboard();
-    this.handleKeyboardGeneration(true);//(shoulDisableKeyboardKeys, shouldActivateSubmitBtn)
+    this.handleEventListeners(true);//(disableKeyboard);
+    this.handleKeyboardGeneration(true);//(shoulDisableKeyboardKeys)
     this.handleClearArray();
     if(status){
       this.handleLevelIncrease();
       this.handleSoundGeneration(this.#view.victorySound);//plays victory sound
+      this.handleAlertMessageGeneration(true,`🎉 Congratulations! You've guessed the word! 🥳`)
     }else{
       this.handleSoundGeneration(this.#view.failSound);//plays lose sound
+      this.handleAlertMessageGeneration(true,`😢 Sorry, you've run out of attempts!`)
     }
     this.handleSaveWordleData();// fixes the issue of the game data reseting in it's empty
-    console.log(this.levelCompletionTimeLine)
 
     setTimeout(()=>{
       this.clearWordId();
@@ -419,7 +444,6 @@ export class Controller{
   }
 
   validateGuessRow(array){
-    console.log('array: ',array)
     this.addAttributesToWordInArray(array);
     this.addAttributetoKeyboardKeys(array);
 
@@ -433,7 +457,6 @@ export class Controller{
 
     // If the correct (rLrP) letter class is found 5 times, level is completed
     if (activationThreshold === this.n0OfColumn) {
-      console.log(`activation: ${activationThreshold} step 4`);
       //this.handleWordleCellGeneration();
       this.levelCompleted();
       return; // Exit the handleAddToArray function completely

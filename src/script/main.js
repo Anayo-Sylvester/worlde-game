@@ -6,4 +6,3 @@ export const wordle = new Controller(new Model(), new View()
 );
 
 wordle.loadWordleData();
-//wordle.overallUiGeneration(); 

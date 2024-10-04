@@ -33,44 +33,9 @@ a {
   text-decoration: none;
 }
 
-main #keyboard .row .submit, main #keyboard .row button, main #input span, header .level-container .img-cont, header .back, header .money-container span {
+main #keyboard .row button, main #input span, header .level-container .img-cont {
   display: grid;
   place-content: center;
-}
-
-header .money-container {
-  position: relative;
-  display: flex;
-  border-radius: 30px;
-  background: hsla(0, 0%, 0%, 0.3);
-  color: hsl(0, 0%, 100%);
-  height: 28.8px;
-  width: 100px;
-}
-
-header .money-container .money-amount {
-  margin: auto;
-}
-
-header .money-container .money-icon {
-  position: absolute;
-  height: 28.8px;
-  right: 0;
-  top: 0;
-}
-
-header .money-container span {
-  width: 12.5px;
-  height: 12.5px;
-  border-radius: 50%;
-  cursor: pointer;
-  position: absolute;
-  right: 1px;
-  bottom: 0px;
-  background: hsl(126, 57%, 48%);
-}
-header .money-container span img {
-  height: 12.5px;
 }
 
 body {
@@ -79,21 +44,15 @@ body {
 
 header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: 15px 5px;
   border: 2px;
-}
-header .back {
-  color: #fff;
-  width: -moz-fit-content;
-  width: fit-content;
-  font-size: 60px;
 }
 header .level-container {
   position: relative;
   height: -moz-fit-content;
   height: fit-content;
-  margin: auto -70px auto 0;
+  margin: auto 0 auto 0;
 }
 header .level-container .level {
   text-align: center;
@@ -117,9 +76,7 @@ header .level-container .img-cont img {
   height: 15px;
   width: auto;
 }
-header .money-container {
-  margin: auto 0;
-}
+
 main #input {
   height: clamp(360px, 50vh, 50vh);
   padding: 0 45px;
@@ -146,6 +103,22 @@ main #input span.right {
   background: hsl(120, 34%, 58%);
   border: none;
 }
+main #alert {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  margin-left: 110%;
+  transition: 0.1s;
+}
+main #alert.active {
+  margin-left: 0%;
+  transition: 0.1s;
+}
+main #alert img {
+  margin-right: 10px;
+  height: 20px;
+}
 main #keyboard {
   display: flex;
   flex-direction: column;
@@ -159,7 +132,7 @@ main #keyboard .row {
   width: fit-content;
   gap: 5px;
 }
-main #keyboard .row .submit, main #keyboard .row button {
+main #keyboard .row button {
   background: #fff;
   width: 8vw;
   height: max(40px, 5vh);
@@ -185,14 +158,4 @@ main #keyboard .row button.right {
 main #keyboard .row button:active {
   background: hsl(0, 1%, 28%);
   color: #fff;
-}
-main #keyboard .row .submit {
-  color: hsl(0, 0%, 100%);
-  background: hsl(0, 1%, 57%);
-  box-shadow: hsl(240, 1%, 58%);
-  border-radius: 25px;
-  width: 20vw;
-}
-main #keyboard .row .submit.active {
-  background: hsl(120, 100%, 22%);
 }/*# sourceMappingURL=game.css.map */
