@@ -15,7 +15,6 @@ export class Model {
   }
 
   increaseLevel() {
-    console.log('level: ', this.wordleData.level);
     this.wordleData.level++;
     this.saveData();
   }
@@ -50,7 +49,6 @@ export class Model {
       const res = await fetch("https://anayo-sylvester.github.io/worlde-game/assets/json/words.json");
 
       if (res.ok !== true) {
-        console.log(res);
         throw new Error("Bad response");
       }
 
