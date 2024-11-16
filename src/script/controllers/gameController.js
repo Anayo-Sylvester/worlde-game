@@ -1,5 +1,6 @@
 // latter address all * using find
-let a = 0;
+"use strict";
+  
 export class Controller{
   #model;
   #view;

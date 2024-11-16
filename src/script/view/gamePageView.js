@@ -1,10 +1,5 @@
 "use strict";
 
-
-// Define the default keyboard structure
-export const inputContainer = document.querySelector("#input");
-export const keyboardContainer = document.querySelector('#keyboard');
-
 export class View {
     
     static DEFAULT_KEYBOARD_LAYOUT = [
@@ -129,7 +124,6 @@ export class View {
         this.alertContainer.querySelector('p').innerText = message;
         if(enable){
             this.alertContainer.classList.add('active');
-            console.log({status})
             if(status === ""){
                 this.alertContainer.querySelector('img').src = '';
                 this.alertContainer.querySelector('img').alt = '';

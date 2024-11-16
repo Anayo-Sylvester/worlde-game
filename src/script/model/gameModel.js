@@ -1,3 +1,5 @@
+"use strict";
+
 export class Model {
 
   // Constant for the default data structure
@@ -64,4 +66,3 @@ export class Model {
     this.saveData();  // Ensure the reset data is saved in localStorage
   }
 }
-
