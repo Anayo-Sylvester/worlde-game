@@ -50,6 +50,7 @@ export class Model {
       const res = await fetch("../../../assets/json/words.json");
 
       if (res.ok !== true) {
+        console.log(res);
         throw new Error("Bad response");
       }
 
