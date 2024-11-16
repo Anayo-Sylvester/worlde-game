@@ -23,6 +23,7 @@ body {
   margin: 0;
   padding: 0;
   background: hsl(0, 4%, 35%);
+  overflow: hidden;
 }
 
 .spin-container, .no-ads-container, button {
