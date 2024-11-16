@@ -18,7 +18,7 @@ export class View {
         this.inputCellAmount = 30;
         this.deleteImg = `<img src="../assets/Images/buttons/backspace.png" alt="backspace">`;
 
-        this.victorySound = 'https://anayo-sylvester.github.io/worlde-game/sounds/Victory_Sound_Effect.mp3';
+        this.victorySound = 'https://anayo-sylvester.github.io/worlde-game/assets/sounds/Victory_Sound_Effect.mp3';
         this.failSound = 'https://anayo-sylvester.github.io/worlde-game/assets/sounds/Lose_Sound_Effect.mp3';
         this.buttonClickSound = `https://anayo-sylvester.github.io/worlde-game/assets/sounds/Button_click_sound.mp3`;
 
