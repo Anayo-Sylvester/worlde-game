@@ -5,7 +5,7 @@ export class View {
     static DEFAULT_KEYBOARD_LAYOUT = [
         [{ key: 'q' }, { key: 'w' }, { key: 'e' }, { key: 'r' }, { key: 't' }, { key: 'y' }, { key: 'u' }, { key: 'i' }, { key: 'o' }, { key: 'p' }],
         [{ key: 'a' }, { key: 's' }, { key: 'd' }, { key: 'f' }, { key: 'g' }, { key: 'h' }, { key: 'j' }, { key: 'k' }, { key: 'l' }],
-        [{ key: 'z' }, { key: 'x' }, { key: 'c' }, { key: 'v' }, { key: 'b' }, { key: 'n' }, { key: 'm' }, { key: '<img src="../assets/Images/buttons/backspace.png" alt="backspace">', data: 'backspace' }]
+        [{ key: 'z' }, { key: 'x' }, { key: 'c' }, { key: 'v' }, { key: 'b' }, { key: 'n' }, { key: 'm' }, { key: '<img src="https://anayo-sylvester.github.io/worlde-game/assets/Images/buttons/backspace.png" alt="backspace">', data: 'backspace' }]
     ];//if editted also edit in resetKeyboard()
 
     constructor() {
@@ -18,9 +18,9 @@ export class View {
         this.inputCellAmount = 30;
         this.deleteImg = `<img src="../assets/Images/buttons/backspace.png" alt="backspace">`;
 
-        this.victorySound = '../../assets/sounds/Victory_Sound_Effect.mp3';
-        this.failSound = '../../assets/sounds/Lose_Sound_Effect.mp3';
-        this.buttonClickSound = `../../assets/sounds/Button_click_sound.mp3`;
+        this.victorySound = 'https://anayo-sylvester.github.io/worlde-game/sounds/Victory_Sound_Effect.mp3';
+        this.failSound = 'https://anayo-sylvester.github.io/worlde-game/assets/sounds/Lose_Sound_Effect.mp3';
+        this.buttonClickSound = `https://anayo-sylvester.github.io/worlde-game/assets/sounds/Button_click_sound.mp3`;
 
         this.levelContainer = document.querySelector('.level span.num');
 
