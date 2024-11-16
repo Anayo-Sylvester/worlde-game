@@ -110,6 +110,7 @@ main #alert {
   justify-content: center;
   align-items: center;
   margin-left: 110%;
+  overflow: hidden;
   transition: 0.1s;
 }
 main #alert.active {
