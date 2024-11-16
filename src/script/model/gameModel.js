@@ -47,7 +47,7 @@ export class Model {
 
   async loadWordsData() {
     try {
-      const res = await fetch("../../../assets/json/words.json");
+      const res = await fetch("https://anayo-sylvester.github.io/worlde-game/assets/json/words.json");
 
       if (res.ok !== true) {
         console.log(res);
