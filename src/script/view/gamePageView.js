@@ -22,14 +22,14 @@ export class View {
         this.failSound = 'https://anayo-sylvester.github.io/worlde-game/assets/sounds/Lose_Sound_Effect.mp3';
         this.buttonClickSound = `https://anayo-sylvester.github.io/worlde-game/assets/sounds/Button_click_sound.mp3`;
 
-        this.levelContainer = document.querySelector('.level span.num');
+        this.levelContainer = document.querySelector('.level');
 
         // Use the DEFAULT_KEYBOARD_LAYOUT variable for initialization
         this.keyboardKeys = JSON.parse(localStorage.getItem('keyboardKeys')) || JSON.parse(JSON.stringify(View.DEFAULT_KEYBOARD_LAYOUT))
     }
 
     inputLevel(level) {
-        this.levelContainer.innerHTML = level;
+        this.levelContainer.innerHTML =  `LEVEL<span class="num">${level}</span>`;
     }
 
     createInputCell(value, rowId, colId, _class, property) {

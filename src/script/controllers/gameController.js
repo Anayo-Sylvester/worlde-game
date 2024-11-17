@@ -237,6 +237,9 @@ export class Controller{
   
   handleEventListeners(disableKeyboard = false) {
     const sound = this.#view.buttonClickSound;
+    window.addEventListener('DOMContentLoaded',()=>{
+      document.querySelector('#loader').remove()
+    })
     // Add event listener for on-screen keyboard buttons
     this.#view.keyboardContainer.querySelectorAll('button').forEach(button => {
       button.addEventListener('click', () => {
