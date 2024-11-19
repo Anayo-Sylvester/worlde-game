@@ -65,19 +65,6 @@ header .level-container .level span {
   font-size: 32px;
 }
 
-main #input img{
-  position: absolute;
-  background-color: hsl(45, 64%, 74%);
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-  width: 100%;
-  max-width: 780px;
-  height: auto;
-}
-
 main #input {
   height: clamp(360px, 50vh, 50vh);
   padding: 0 45px;
